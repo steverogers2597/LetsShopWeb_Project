@@ -1,4 +1,4 @@
-** --- Project Diagram ---**
+**---Project Diagram---**
 LetsShopWeb_Project/
 │
 ├── src/
@@ -34,7 +34,6 @@ LetsShopWeb_Project/
 └── testng.xml
 
 **---Execution Sequence---**
-
 1. TestRunner.java          → Triggers test execution
        │
 2. AccountRegistration      → Cucumber reads scenarios
