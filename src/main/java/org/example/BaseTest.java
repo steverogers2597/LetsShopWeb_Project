@@ -52,6 +52,11 @@ public class BaseTest {
         driver.get(getProperty("url"));
     }
 
+    // ✅ This is what CucumberHooks calls to get the driver
+    public static WebDriver getDriver() {
+        return driver;
+    }
+
     // ── Driver Teardown ───────────────────────────────────────────
     public static void quitDriver() {
         if (driver != null) {
