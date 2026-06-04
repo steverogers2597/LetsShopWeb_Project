@@ -3,42 +3,81 @@
 
 package hooks;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
 import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.example.BaseTest;
 import org.example.ExtentReportManager;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 
 public class CucumberHooks {
 
-    // ── Runs before every Scenario ────────────────────────────────
+    // ─────────────────────────────────────────
+    // @Before — Runs ONCE before the Scenario
+    // ─────────────────────────────────────────
     @Before
     public void setUp(Scenario scenario) {
-        // Start WebDriver and navigate to URL
         BaseTest.initDriver();
-
-        // Create an ExtentTest entry for this scenario
         ExtentReportManager.createTest(scenario.getName());
         ExtentReportManager.getTest().info("▶ Starting: " + scenario.getName());
     }
 
-    // ── Runs after every Scenario ─────────────────────────────────
+    // ─────────────────────────────────────────
+    // @AfterStep — Runs AFTER EVERY single step
+    // ─────────────────────────────────────────
+    @AfterStep
+    public void takeScreenshotAfterStep(Scenario scenario) {
+        WebDriver driver = BaseTest.getDriver();
+
+        if (driver == null) return;
+
+        try {
+            // Capture screenshot as Base64
+            String base64Screenshot = ((TakesScreenshot) driver)
+                    .getScreenshotAs(OutputType.BASE64);
+
+            // ✅ Attach to ExtentReport with PASS or FAIL styling per step
+            if (scenario.isFailed()) {
+                ExtentReportManager.getTest().fail(
+                        "❌ Step FAILED — Screenshot:",
+                        MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build()
+                );
+            } else {
+                ExtentReportManager.getTest().pass(
+                        "✅ Step PASSED — Screenshot:",
+                        MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build()
+                );
+            }
+
+            // ✅ Also embed into Cucumber's own HTML report
+            scenario.attach(
+                    java.util.Base64.getDecoder().decode(base64Screenshot),
+                    "image/png",
+                    "Step Screenshot"
+            );
+
+        } catch (Exception e) {
+            ExtentReportManager.getTest().warning(
+                    "⚠️ Could not capture screenshot for step: " + e.getMessage()
+            );
+        }
+    }
+
+    // ─────────────────────────────────────────
+    // @After — Runs ONCE after the Scenario
+    // ─────────────────────────────────────────
     @After
     public void tearDown(Scenario scenario) {
-
-        // Capture screenshot on failure
         if (scenario.isFailed()) {
-            byte[] screenshot = ((TakesScreenshot) BaseTest.driver)
-                    .getScreenshotAs(OutputType.BYTES);
-            scenario.attach(screenshot, "image/png", "Failure Screenshot");
             ExtentReportManager.getTest().fail("❌ Scenario FAILED: " + scenario.getName());
         } else {
             ExtentReportManager.getTest().pass("✅ Scenario PASSED: " + scenario.getName());
         }
 
-        // Flush report and quit driver
         ExtentReportManager.flushReport();
         BaseTest.quitDriver();
     }

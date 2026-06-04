@@ -1,0 +1,239 @@
+The Full Execution Flow
+
+🟢 STEP 1 — TestRunner.java is Triggered
+UnknownYou click Run on TestRunner.java
+         │
+         ▼
+TestNG sees it extends AbstractTestNGCucumberTests
+TestNG hands control over to Cucumber
+
+
+TestNG recognises TestRunner as a test class
+The @CucumberOptions annotation tells Cucumber:
+
+Where to find .feature files → src/test/resources/Features
+Where to find step definitions → hooks and stepdefinitions packages
+What reports to generate → pretty, HTML, JSON
+
+
+
+
+🟢 STEP 2 — Cucumber Scans The Feature File
+UnknownCucumber opens AccountRegistration.feature
+         │
+         ▼
+Reads the Scenario line by line
+         │
+         ▼
+Maps each Given / When / And / Then
+to a matching @annotation in StepDefs
+
+
+Cucumber finds your one scenario:
+"Successfully register a new user on LetsShop"
+It queues it up for execution
+
+
+🟢 STEP 3 — CucumberHooks @Before Fires
+UnknownBefore the Scenario starts
+         │
+         ▼
+CucumberHooks.setUp() is called
+
+Two things happen here:
+
+BaseTest.initDriver() is called
+
+Reads browser=chrome from config.properties
+Launches ChromeDriver
+Maximises the browser window
+Sets implicit wait to 10 seconds
+Opens the URL → https://rahulshettyacademy.com/client/#/auth/register
+
+
+ExtentReportManager.createTest() is called
+
+Creates a new test entry in the HTML report
+Logs "▶ Starting: Successfully register a new user on LetsShop"
+
+
+
+
+🟢 STEP 4 — Scenario Steps Execute One By One
+UnknownEach step in the feature file runs in order
+         │
+         ▼
+Cucumber matches the step text to a 
+@Given / @When / @And method in StepDefs
+         │
+         ▼
+StepDefs calls the relevant method
+in AccountRegistrationPage.java
+         │
+         ▼
+AccountRegistrationPage uses Selenium
+WebDriver to interact with the browser
+
+Here's what happens for each step:
+
+
+
+Step in Feature File
+StepDef Method Called
+What Selenium Does on Browser
+
+
+
+
+Given I navigate to the registration page
+navigateToRegistrationPage()
+Already on page (opened in @Before) — logs the URL
+
+
+When I enter first name "John"
+enterFirstName("John")
+Finds the First Name field → types John
+
+
+And I enter last name "Doe"
+enterLastName("Doe")
+Finds the Last Name field → types Doe
+
+
+And I enter email "johndoe_test@example.com"
+enterEmail(...)
+Finds the Email field → types the email
+
+
+And I enter phone number "1234567890"
+enterPhoneNumber(...)
+Finds Phone field → types the number
+
+
+And I select occupation "Student"
+selectOccupation("Student")
+Finds the dropdown → selects Student
+
+
+And I select gender "Male"
+selectGender("Male")
+Finds the Male radio button → clicks it
+
+
+And I enter password "Test@1234"
+enterPassword(...)
+Finds Password field → types the password
+
+
+And I confirm password "Test@1234"
+enterConfirmPassword(...)
+Finds Confirm Password field → types again
+
+
+And I check the age confirmation checkbox
+checkAgeCheckbox()
+Finds the checkbox → clicks it if not selected
+
+
+And I click the Register button
+clickRegister()
+Finds the Register button → clicks it
+
+
+Then I should see a successful registration confirmation
+verifyRegistration()
+Looks for success message on page → Assert
+
+
+
+
+After every single step, ExtentReportManager.getTest().info(...) logs that step into the HTML report.
+
+
+🟢 STEP 5 — The Assertion (Then Step)
+UnknownregistrationPage.isRegistrationSuccessful()
+         │
+         ▼
+Selenium looks for success text on page
+         │
+    ┌────┴────┐
+    ▼         ▼
+ Found     Not Found
+    │         │
+    ▼         ▼
+ PASS      FAIL + AssertionError thrown
+
+
+If the success message is visible → test PASSES
+If not found within the implicit wait → test FAILS
+
+
+🟢 STEP 6 — CucumberHooks @After Fires
+UnknownAfter the Scenario ends (pass or fail)
+         │
+         ▼
+CucumberHooks.tearDown() is called
+
+Two paths here:
+Unknown         Scenario Result
+         │
+    ┌────┴──────────────┐
+    ▼                   ▼
+ PASSED              FAILED
+    │                   │
+    ▼                   ▼
+Logs ✅ PASSED     Takes Screenshot
+in report          Attaches to report
+                   Logs ❌ FAILED
+
+Then regardless of pass or fail:
+
+ExtentReportManager.flushReport() → writes the HTML report to disk at reports/TestReport.html
+BaseTest.quitDriver() → closes the browser
+
+
+🟢 STEP 7 — Reports Are Generated
+UnknownThree reports written to disk:
+         │
+         ├── reports/TestReport.html        ← ExtentReports (rich, visual)
+         ├── reports/cucumber-html-report.html  ← Cucumber built-in HTML
+         └── reports/cucumber.json          ← JSON (for CI tools like Jenkins)
+
+
+Open reports/TestReport.html in any browser to see the full visual report with logs
+
+
+🗺️ The Big Picture In One Diagram
+UnknownTestRunner.java
+     │
+     ▼
+Cucumber reads AccountRegistration.feature
+     │
+     ▼
+CucumberHooks @Before
+  → Launch Chrome
+  → Open Registration URL
+  → Start ExtentReport entry
+     │
+     ▼
+Step 1 to 11 execute in order
+  → StepDefs calls Page methods
+  → Page methods drive the browser via Selenium
+  → Each step logged to ExtentReport
+     │
+     ▼
+Assert success message visible
+     │
+  ┌──┴──┐
+PASS   FAIL
+  │      └── Screenshot captured
+  │
+  ▼
+CucumberHooks @After
+  → Log result to report
+  → Flush HTML report to disk
+  → Quit browser
+     │
+     ▼
+reports/TestReport.html ✅
+
