@@ -17,7 +17,7 @@ public class AccountRegistrationPage {
     private final By lastNameField    = By.xpath("//input[@placeholder='Last Name']");
     private final By emailField       = By.xpath("//input[@placeholder='email@example.com']");
     private final By phoneField       = By.xpath("//input[@placeholder='enter your number']");
-    private final By occupationDrop   = By.xpath("//select[@name='occupation']");
+    private final By occupationDrop   = By.xpath("//select[@formcontrolname='occupation']");
     private final By passwordField    = By.xpath("//input[@placeholder='Passsword']");
     private final By confirmPassField = By.xpath("//input[@placeholder='Confirm Passsword']");
     private final By ageCheckbox      = By.xpath("//input[@type='checkbox']");

@@ -8,7 +8,7 @@ Feature: Account Registration on LetsShop
     And   I enter last name "Doe"
     And   I enter email "johndoe_test@example.com"
     And   I enter phone number "1234567890"
-    And   I select occupation "Student"
+    And   I select occupation "Engineer"
     And   I select gender "Male"
     And   I enter password "Test@1234"
     And   I confirm password "Test@1234"
