@@ -6,85 +6,43 @@ package stepdefinitions;
 import io.cucumber.java.en.*;
 import org.example.BaseTest;
 import org.example.ExtentReportManager;
-import org.testng.Assert;
 import pages.AccountRegistrationPage;
 
-public class AccountRegistrationStepDefs {
+public class AccountRegistrationStepDefs extends BaseTest {
 
-    private final AccountRegistrationPage registrationPage = new AccountRegistrationPage();
+    AccountRegistrationPage registrationPage = new AccountRegistrationPage();
 
-    @Given("I navigate to the LetsShop registration page")
-    public void navigateToRegistrationPage() {
-        // BaseTest.initDriver() already opens the URL via CucumberHooks @Before
-        ExtentReportManager.getTest().info("Navigated to: " + BaseTest.getProperty("url"));
+    @Given("I navigate to the registration page")
+    public void iNavigateToTheRegistrationPage() {
+        ExtentReportManager.getTest().info("📌 Step: Given I navigate to the registration page");
+        registrationPage.navigateToRegistrationPage();
     }
 
-    @When("I enter first name {string}")
-    public void enterFirstName(String firstName) {
-        registrationPage.enterFirstName(firstName);
-        ExtentReportManager.getTest().info("Entered First Name: " + firstName);
+    @When("I fill in the registration form")
+    public void iFillInTheRegistrationForm() {
+        ExtentReportManager.getTest().info("📌 Step: When I fill in the registration form");
+        registrationPage.enterFirstName();
+        registrationPage.enterLastName();
+        registrationPage.enterEmail();
+        registrationPage.enterPhoneNumber();
+        registrationPage.selectOccupation();
+        registrationPage.selectGender();
+        registrationPage.enterPassword();
+        registrationPage.enterConfirmPassword();
+        registrationPage.clickTermsCheckbox();
+        ExtentReportManager.getTest().info("Registration Form Filled");
     }
 
-    @And("I enter last name {string}")
-    public void enterLastName(String lastName) {
-        registrationPage.enterLastName(lastName);
-        ExtentReportManager.getTest().info("Entered Last Name: " + lastName);
+    @And("I submit the form")
+    public void iSubmitTheForm() {
+        ExtentReportManager.getTest().info("📌 Step: And I submit the form");
+        registrationPage.clickRegisterButton();
     }
 
-    @And("I enter email {string}")
-    public void enterEmail(String email) {
-        registrationPage.enterEmail(email);
-        ExtentReportManager.getTest().info("Entered Email: " + email);
-    }
-
-    @And("I enter phone number {string}")
-    public void enterPhoneNumber(String phone) {
-        registrationPage.enterPhoneNumber(phone);
-        ExtentReportManager.getTest().info("Entered Phone: " + phone);
-    }
-
-    @And("I select occupation {string}")
-    public void selectOccupation(String occupation) {
-        registrationPage.selectOccupation(occupation);
-        ExtentReportManager.getTest().info("Selected Occupation: " + occupation);
-    }
-
-    @And("I select gender {string}")
-    public void selectGender(String gender) {
-        registrationPage.selectGender(gender);
-        ExtentReportManager.getTest().info("Selected Gender: " + gender);
-    }
-
-    @And("I enter password {string}")
-    public void enterPassword(String password) {
-        registrationPage.enterPassword(password);
-        ExtentReportManager.getTest().info("Entered Password");
-    }
-
-    @And("I confirm password {string}")
-    public void confirmPassword(String confirmPassword) {
-        registrationPage.enterConfirmPassword(confirmPassword);
-        ExtentReportManager.getTest().info("Confirmed Password");
-    }
-
-    @And("I check the age confirmation checkbox")
-    public void checkAgeCheckbox() {
-        registrationPage.checkAgeCheckbox();
-        ExtentReportManager.getTest().info("Checked: I am 18 or Older");
-    }
-
-    @And("I click the Register button")
-    public void clickRegister() {
-        registrationPage.clickRegister();
-        ExtentReportManager.getTest().info("Clicked Register button");
-    }
-
-    @Then("I should see a successful registration confirmation")
-    public void verifyRegistration() {
-        Assert.assertTrue(
-                registrationPage.isRegistrationSuccessful(),
-                "Registration success message not displayed!"
-        );
+    @Then("I should be registered successfully")
+    public void iShouldBeRegisteredSuccessfully() {
+        ExtentReportManager.getTest().info("📌 Step: Then I should be registered successfully");
+        registrationPage.verifySuccessMessage();
         ExtentReportManager.getTest().pass("✅ Registration successful!");
     }
 }
