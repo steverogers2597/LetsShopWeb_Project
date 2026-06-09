@@ -27,7 +27,7 @@ public class AccountRegistrationPage extends BaseTest {
     private final By confirmPasswordField = By.xpath("//input[@formcontrolname='confirmPassword']");
     private final By termsCheckbox        = By.xpath("//input[@type='checkbox']");
     private final By registerButton       = By.xpath("//input[@value='Register']");
-    private final By successToast         = By.xpath("//*[@id='toast-container']");
+    private final By successToast         = By.xpath("//h1[normalize-space()='Account Created Successfully']");
 
     // ── Navigate to Registration Page (from Login Page) ───────────────────────
     public void navigateToRegistrationPage() {
