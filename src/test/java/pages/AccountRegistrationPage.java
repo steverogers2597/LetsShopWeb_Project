@@ -28,6 +28,7 @@ public class AccountRegistrationPage extends BaseTest {
     private final By termsCheckbox        = By.xpath("//input[@type='checkbox']");
     private final By registerButton       = By.xpath("//input[@value='Register']");
     private final By successToast         = By.xpath("//h1[normalize-space()='Account Created Successfully']");
+    private final By userExistMsg         = By.xpath("//div[contains(@class, 'toast-message') and contains(normalize-space(), 'User already exisits')]");
 
     // ── Navigate to Registration Page (from Login Page) ───────────────────────
     public void navigateToRegistrationPage() {
@@ -99,5 +100,12 @@ public class AccountRegistrationPage extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(successToast));
         assert driver.findElement(successToast).isDisplayed()
                 : "❌ Registration success message not displayed!";
+    }
+
+    // ── Verify error message ─────────────────────────────────────────────────────────
+    public void verifyUserExistMessage() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(userExistMsg));
+        assert driver.findElement(userExistMsg).isDisplayed()
+                : "Error Message not displayed!";
     }
 }

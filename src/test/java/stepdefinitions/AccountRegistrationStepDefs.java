@@ -45,4 +45,21 @@ public class AccountRegistrationStepDefs extends BaseTest {
         registrationPage.verifySuccessMessage();
         ExtentReportManager.getTest().pass("✅ Registration successful!");
     }
+
+    @When("a user is already registered and attempts to register himself")
+    public void fillInTheForm() {
+        ExtentReportManager.getTest().info("📌 Step: Given I navigate to the registration page");
+        registrationPage.navigateToRegistrationPage();
+        iFillInTheRegistrationForm();
+        registrationPage.clickRegisterButton();
+        ExtentReportManager.getTest().pass("✅ Register button clicked after filling the form!");
+    }
+
+    @Then("an error message saying user already exists displays")
+    public void userExistsErrorMessage() {
+        ExtentReportManager.getTest().info("user Exists error message should be displayed");
+        registrationPage.verifyUserExistMessage();
+        ExtentReportManager.getTest().pass("user Exists error message is displayed");
+    }
+
 }
