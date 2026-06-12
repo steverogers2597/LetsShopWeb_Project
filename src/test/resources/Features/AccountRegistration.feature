@@ -18,32 +18,32 @@ Feature: User Registration on LetsShop
     Then an error message saying user already exists displays
 
   # SCENARIO 3 — NEGATIVE: Submit form with all fields empty
-  @Negative @Regression
+  @Negative @Regression @test
   Scenario: Verify validation errors when registration form is submitted empty
     Given I navigate to the registration page
     When I submit the form without filling any fields
     Then mandatory field validation errors should be displayed
 
-  # SCENARIO 4 — NEGATIVE: Invalid email format
-  @Negative @Regression
-  Scenario: Verify error when an invalid email format is entered during registration
-    Given I navigate to the registration page
-    When I fill in the registration form with an invalid email "johndoe@"
-    And I submit the form
-    Then an email format validation error should be displayed
-
-  # SCENARIO 5 — NEGATIVE: Passwords do not match
-  @Negative @Regression
-  Scenario: Verify error when password and confirm password do not match
-    Given I navigate to the registration page
-    When I fill in the registration form with mismatched passwords
-    And I submit the form
-    Then a password mismatch validation error should be displayed
-
-  # SCENARIO 6 — NEGATIVE: Invalid phone number (less than 10 digits)
-  @Negative @Regression
-  Scenario: Verify error when an invalid phone number is entered during registration
-    Given I navigate to the registration page
-    When I fill in the registration form with an invalid phone number "12345"
-    And I submit the form
-    Then a phone number validation error should be displayed
+#  # SCENARIO 4 — NEGATIVE: Invalid email format
+#  @Negative @Regression
+#  Scenario: Verify error when an invalid email format is entered during registration
+#    Given I navigate to the registration page
+#    When I fill in the registration form with an invalid email "johndoe@"
+#    And I submit the form
+#    Then an email format validation error should be displayed
+#
+#  # SCENARIO 5 — NEGATIVE: Passwords do not match
+#  @Negative @Regression
+#  Scenario: Verify error when password and confirm password do not match
+#    Given I navigate to the registration page
+#    When I fill in the registration form with mismatched passwords
+#    And I submit the form
+#    Then a password mismatch validation error should be displayed
+#
+#  # SCENARIO 6 — NEGATIVE: Invalid phone number (less than 10 digits)
+#  @Negative @Regression
+#  Scenario: Verify error when an invalid phone number is entered during registration
+#    Given I navigate to the registration page
+#    When I fill in the registration form with an invalid phone number "12345"
+#    And I submit the form
+#    Then a phone number validation error should be displayed

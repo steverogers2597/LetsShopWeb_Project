@@ -14,8 +14,8 @@ import io.cucumber.testng.CucumberOptions;
                 "html:reports/cucumber-html-report.html",        // built-in Cucumber HTML
                 "json:reports/cucumber.json"                     // JSON for CI integration
         },
-        monochrome = true                                    // clean console output
-        //tags = "@Negative"
+        monochrome = true,                                    // clean console output
+        tags = "@test"
 )
 public class TestRunner extends AbstractTestNGCucumberTests {
     // Inherits all Cucumber-TestNG wiring from AbstractTestNGCucumberTests

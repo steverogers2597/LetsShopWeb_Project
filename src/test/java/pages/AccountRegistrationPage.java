@@ -17,18 +17,23 @@ public class AccountRegistrationPage extends BaseTest {
     private final WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
     // ── Locators (All XPath) ───────────────────────────────────────────────────
-    private final By registerHereLink     = By.xpath("//a[normalize-space()='Register here']");
-    private final By firstNameField       = By.xpath("//input[@formcontrolname='firstName']");
-    private final By lastNameField        = By.xpath("//input[@formcontrolname='lastName']");
-    private final By emailField           = By.xpath("//input[@formcontrolname='userEmail']");
-    private final By phoneNumberField     = By.xpath("//input[@formcontrolname='userMobile']");
-    private final By occupationDropdown   = By.xpath("//select[@formcontrolname='occupation']");
-    private final By passwordField        = By.xpath("//input[@formcontrolname='userPassword']");
-    private final By confirmPasswordField = By.xpath("//input[@formcontrolname='confirmPassword']");
-    private final By termsCheckbox        = By.xpath("//input[@type='checkbox']");
-    private final By registerButton       = By.xpath("//input[@value='Register']");
-    private final By successToast         = By.xpath("//h1[normalize-space()='Account Created Successfully']");
-    private final By userExistMsg         = By.xpath("//div[contains(@class, 'toast-message') and contains(normalize-space(), 'User already exisits')]");
+    private final By registerHereLink           = By.xpath("//a[normalize-space()='Register here']");
+    private final By firstNameField             = By.xpath("//input[@formcontrolname='firstName']");
+    private final By lastNameField              = By.xpath("//input[@formcontrolname='lastName']");
+    private final By emailField                 = By.xpath("//input[@formcontrolname='userEmail']");
+    private final By phoneNumberField           = By.xpath("//input[@formcontrolname='userMobile']");
+    private final By occupationDropdown         = By.xpath("//select[@formcontrolname='occupation']");
+    private final By passwordField              = By.xpath("//input[@formcontrolname='userPassword']");
+    private final By confirmPasswordField       = By.xpath("//input[@formcontrolname='confirmPassword']");
+    private final By termsCheckbox              = By.xpath("//input[@type='checkbox']");
+    private final By registerButton             = By.xpath("//input[@value='Register']");
+    private final By successToast               = By.xpath("//h1[normalize-space()='Account Created Successfully']");
+    private final By userExistMsg               = By.xpath("//div[contains(@class, 'toast-message') and contains(normalize-space(), 'User already exisits')]");
+    private final By blankFirstNameErrorMsg     = By.xpath("//div[contains(text(), 'First Name is required')]");
+    private final By blankEmailErrorMsg         = By.xpath("//div[contains(text(), 'Email is required')]");
+    private final By blankPhnNoErrorMsg         = By.xpath("//div[contains(text(), 'Phone Number is required')]");
+    private final By blankPasswordErrorMsg      = By.xpath("//div[contains(text(), 'Password is required')]");
+    private final By blankCheckBoxErrorMsg      = By.xpath("//div[contains(text(), 'Please check above checkbox')]");
 
     // ── Navigate to Registration Page (from Login Page) ───────────────────────
     public void navigateToRegistrationPage() {
@@ -106,6 +111,46 @@ public class AccountRegistrationPage extends BaseTest {
     public void verifyUserExistMessage() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(userExistMsg));
         assert driver.findElement(userExistMsg).isDisplayed()
+                : "Error Message not displayed!";
+    }
+
+    public void validateBlankFirstNameErrorMsg(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(blankFirstNameErrorMsg));
+        String actual = driver.findElement(blankFirstNameErrorMsg).getText();
+        String expected = BaseTest.getProperty("blankFirstNameErrorMsg");
+        assert actual.equals(expected)
+                : "Error Message not displayed!";
+    }
+
+    public void validateBlankEmailErrorMsg(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(blankEmailErrorMsg));
+        String actual = driver.findElement(blankEmailErrorMsg).getText();
+        String expected = BaseTest.getProperty("blankEmailErrorMsg");
+        assert actual.equals(expected)
+                : "Error Message not displayed!";
+    }
+
+    public void validateBlankPhnNoErrorMsg(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(blankPhnNoErrorMsg));
+        String actual = driver.findElement(blankPhnNoErrorMsg).getText();
+        String expected = BaseTest.getProperty("blankPhnNoErrorMsg");
+        assert actual.equals(expected)
+                : "Error Message not displayed!";
+    }
+
+    public void validateBlankPasswordErrorMsg(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(blankPasswordErrorMsg));
+        String actual = driver.findElement(blankPasswordErrorMsg).getText();
+        String expected = BaseTest.getProperty("blankPasswordErrorMsg");
+        assert actual.equals(expected)
+                : "Error Message not displayed!";
+    }
+
+    public void validateBlankCheckBoxErrorMsg(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(blankCheckBoxErrorMsg));
+        String actual = driver.findElement(blankCheckBoxErrorMsg).getText();
+        String expected = BaseTest.getProperty("blankCheckBoxErrorMsg");
+        assert actual.equals(expected)
                 : "Error Message not displayed!";
     }
 }

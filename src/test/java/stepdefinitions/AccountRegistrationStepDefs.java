@@ -30,7 +30,7 @@ public class AccountRegistrationStepDefs extends BaseTest {
         registrationPage.enterPassword();
         registrationPage.enterConfirmPassword();
         registrationPage.clickTermsCheckbox();
-        ExtentReportManager.getTest().info("Registration Form Filled");
+        ExtentReportManager.getTest().pass("Registration Form Filled");
     }
 
     @And("I submit the form")
@@ -60,6 +60,24 @@ public class AccountRegistrationStepDefs extends BaseTest {
         ExtentReportManager.getTest().info("user Exists error message should be displayed");
         registrationPage.verifyUserExistMessage();
         ExtentReportManager.getTest().pass("user Exists error message is displayed");
+    }
+
+    @When("I submit the form without filling any fields")
+    public void iSubmitTheFormWithoutFillingAnyFields() {
+        ExtentReportManager.getTest().info("Submitting the form with all the fields empty");
+        registrationPage.clickRegisterButton();
+        ExtentReportManager.getTest().pass("Form Submitted");
+    }
+
+    @Then("mandatory field validation errors should be displayed")
+    public void mandatoryFieldValidationErrorsShouldBeDisplayed() {
+        ExtentReportManager.getTest().info("Mandatory field validation errors should be displayed");
+        registrationPage.validateBlankFirstNameErrorMsg();
+        registrationPage.validateBlankEmailErrorMsg();
+        registrationPage.validateBlankPhnNoErrorMsg();
+        registrationPage.validateBlankPasswordErrorMsg();
+        registrationPage.validateBlankCheckBoxErrorMsg();
+        ExtentReportManager.getTest().pass("Mandatory field validation errors are displayed");
     }
 
 }
