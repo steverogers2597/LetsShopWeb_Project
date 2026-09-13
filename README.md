@@ -1,3 +1,6 @@
+## 📂 Project Diagram
+
+```text
 LetsShopWeb_Project/
 │
 ├── src/
